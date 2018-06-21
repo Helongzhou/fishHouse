@@ -4,6 +4,11 @@ const Service = require('egg').Service;
 
 class AuthService extends Service {
 
+  /**
+   * @desc 获取验证码
+   * @param {string} phone 有效手机号
+   * @return {object} 验证码
+   */
   async getVerifyCode(phone) {
     const ctx = this.ctx;
     const genRandom = (floor, ceil) => parseInt(Math.random() * (ceil - floor + 1) + floor);
@@ -20,6 +25,12 @@ class AuthService extends Service {
     return { verifyCode: code };
   }
 
+  /**
+   * @desc 验证登录
+   * @param {string} phone 有效手机号
+   * @param {string} verifyCode 有效验证码
+   * @return {object} token
+   */
   async verifyLogin(phone, verifyCode) {
     const ctx = this.ctx;
     if (!ctx.session.verifyCode) {
@@ -37,7 +48,8 @@ class AuthService extends Service {
     }
     ctx.session.verifyCode = null;
     const user = await ctx.service.user.findOrCreate(phone);
-    return { msg: '验证登录成功', data: user };
+    const token = await ctx.service.token.create(user);
+    return { msg: '验证登录成功', token };
   }
 
   // async register(phone, verifyCode) {

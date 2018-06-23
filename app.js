@@ -2,8 +2,8 @@
 
 module.exports = app => {
   if (app.config.env === 'local') {
-    app.beforeStart(function* () {
-      yield app.model.sync({ force: true });
+    app.beforeStart(async function() {
+      await app.model.sync({ force: false }); // 加force:true，会先删掉表后再建表
     });
   }
 };

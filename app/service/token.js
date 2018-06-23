@@ -10,11 +10,16 @@ class TokenService extends Service {
    * @return {object} token
    */
   async create(userInfo) {
-    return this.app.jwt.sign({
-      data: userInfo,
-      exp: this.app.config.jwt.defaultExp,
+    // const ctx = this.ctx;
+    const app = this.app;
+    const { id, nickname, phone, email } = userInfo;
+    const token = app.jwt.sign({
+      data: { id, nickname, phone, email },
+      exp: app.config.jwt.defaultExp,
       iat: Math.floor(Date.now() / 1000) - 1800, // 提前3小时有效， 特别是在我们办公室电脑的时间不准确时便于测试
-    }, this.app.config.jwt.secret);
+    }, app.config.jwt.secret);
+    // ctx.session.token = { header: token.split('.')[0], token };
+    return token;
   }
 
   /**

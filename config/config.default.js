@@ -7,27 +7,30 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_2018@SZXmeilin';
 
   // add your config here
-  config.middleware = [ 'notfoundHandler' ];
-
-  // config.sequelize = {
-  //   dialect: 'mysql',
-  //   database: 'fish_house',
-  //   timezone: '+08:00', // for writing to database
-  //   host: 'localhost',
-  //   port: '3306',
-  //   username: 'root',
-  //   password: '',
-  // };
+  config.middleware = [ 'notfoundHandler', 'errorHandler' ];
 
   config.sequelize = {
-    dialect: 'mysql', // support: mysql, mariadb, postgres, mssql
-    database: 'fishHouse',
-    host: '193.112.12.82',
+    dialect: 'mysql',
+    database: 'fish_house',
+    timezone: '+08:00', // for writing to database
+    host: 'localhost',
     port: '3306',
-    username: 'fishHouse',
-    password: 'SffDKynwJy7ZR8H5',
-    timezone: '+08:00',
+    username: 'root',
+    password: '',
+    define: {
+      freezeTableName: false,
+      timestamp: false,
+    },
   };
+
+  // config.sequelize = {
+  //   database: 'fishHouse',
+  //   host: '193.112.12.82',
+  //   port: '3306',
+  //   username: 'fishHouse',
+  //   password: 'SffDKynwJy7ZR8H5',
+  //   timezone: '+08:00',
+  // };
 
   config.redis = {
     client: {

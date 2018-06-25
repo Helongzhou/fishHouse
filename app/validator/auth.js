@@ -27,5 +27,6 @@ module.exports = app => {
       verifyCode: Joi.string().length(6).required(),
       password: Joi.string().max(26).required(),
     }),
+    logout: Joi.string().required(),
   };
 };

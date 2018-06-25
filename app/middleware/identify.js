@@ -7,7 +7,7 @@ module.exports = (mode = 1) => {
       ctx.throw(401, 'None Authorization header.');
       return next();
     }
-
+    // console.log(ctx);
     const parts = ctx.header.authorization.split(' ');
     const jwtToken = parts[1];
 
@@ -17,11 +17,17 @@ module.exports = (mode = 1) => {
       return next();
     }
 
+    // 判断jwt是否失效;
+    const result = await ctx.service.token.isInvalid(jwtToken);
+    if (result === 1) {
+      ctx.throw(401, 'Token Illegal');
+    }
+
     // 调用jwt服务解密token
     try {
-      const userInfo = ctx.service.token.verify(jwtToken).data;
-      if (userInfo) {
-        ctx.state.user = userInfo;
+      const { data } = ctx.service.token.verify(jwtToken);
+      if (data) {
+        ctx.state.user = data;
       }
     } catch (error) {
       if (mode === 1) {

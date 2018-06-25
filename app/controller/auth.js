@@ -32,10 +32,10 @@ class AuthController extends Controller {
     ctx.body = await ctx.service.auth.login(value.username, value.password);
   }
 
-  // async logout(ctx) {
-  //   ctx.body = await ctx.service.auth.logout(ctx.query.phone);
-  // }
-
+  async logout(ctx) {
+    const { value } = ctx.validate(this.app.validator.auth.logout, ctx.header.authorization);
+    ctx.body = await ctx.service.auth.logout(value);
+  }
 }
 
 module.exports = AuthController;

@@ -33,8 +33,12 @@ class AuthController extends Controller {
   }
 
   async logout(ctx) {
-    const { value } = ctx.validate(this.app.validator.auth.logout, ctx.header.authorization);
-    ctx.body = await ctx.service.auth.logout(value);
+    ctx.body = await ctx.service.auth.logout(ctx.header.authorization);
+  }
+
+  async setPassword(ctx) {
+    const { value } = ctx.validate(this.app.validator.auth.password, ctx.request.body.password);
+    ctx.body = await ctx.service.auth.setPassword(ctx.header.authorization, value);
   }
 }
 

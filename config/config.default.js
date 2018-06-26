@@ -7,35 +7,30 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_2018@SZXmeilin';
 
   // add your config here
-  config.middleware = [ 'notfoundHandler', 'errorHandler' ];
+  config.middleware = [ 'notfoundHandler', 'errorHandler', 'identify' ];
+
+  config.identify = {
+    ignore: [ '/auth/register', '/auth/login' ],
+  };
 
   config.sequelize = {
     dialect: 'mysql',
     database: 'fish_house',
-    timezone: '+08:00', // for writing to database
     host: 'localhost',
     port: '3306',
     username: 'root',
     password: '',
+    timezone: '+08:00',
     define: {
       freezeTableName: false,
       timestamp: false,
     },
   };
 
-  // config.sequelize = {
-  //   database: 'fishHouse',
-  //   host: '193.112.12.82',
-  //   port: '3306',
-  //   username: 'fishHouse',
-  //   password: 'SffDKynwJy7ZR8H5',
-  //   timezone: '+08:00',
-  // };
-
   config.redis = {
     client: {
-      port: 6379, // Redis port
-      host: '127.0.0.1', // Redis host
+      port: 6379,
+      host: '127.0.0.1',
       password: '',
       db: 0,
     },
@@ -43,7 +38,7 @@ module.exports = appInfo => {
 
   config.sessionRedis = {
     key: 'EGG_SESSION',
-    maxAge: 24 * 3600 * 1000, // 1 天
+    maxAge: 24 * 3600 * 1000, // 默认 1 天过期
     httpOnly: true,
     encrypt: false,
   };
@@ -56,14 +51,14 @@ module.exports = appInfo => {
     throw: true,
   };
 
-  config.onerror = {
-    all(err, ctx) {
-      // 在此处定义针对所有响应类型的错误处理方法 https://eggjs.org/zh-cn/core/error-handling.html#errorpageurl
-      // 注意，定义了 config.all 之后，其他错误处理方法不会再生效
-      ctx.body = JSON.stringify(err);
-      ctx.status = 500;
-    },
-  };
+  // config.onerror = {
+  //   all(err, ctx) {
+  //     // 在此处定义针对所有响应类型的错误处理方法 https://eggjs.org/zh-cn/core/error-handling.html#errorpageurl
+  //     // 注意，定义了 config.all 之后，其他错误处理方法不会再生效
+  //     ctx.body = JSON.stringify(err);
+  //     ctx.status = 500;
+  //   },
+  // };
 
   config.jwt = {
     secret: '123456',

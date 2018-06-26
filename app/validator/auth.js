@@ -2,31 +2,36 @@
 
 module.exports = app => {
   const Joi = app.Joi;
+  const username = Joi.string().min(1).max(50)
+    .required(); // 账号：邮箱及手机号码
+  const password = Joi.string().min(6).max(26)
+    .required();
+  const phone = Joi.string().length(11).required();
+  const verifyCode = Joi.string().length(6).required(); // 验证码
+  const nickname = Joi.string().max(11).required();
+  const email = Joi.string().email().max(50)
+    .required();
   return {
-    phone: Joi.string().length(11).required(),
+    phone,
     login: Joi.object().keys({
-      username: Joi.string().min(6).max(50)
-        .required(),
-      password: Joi.string().max(26).required(),
+      username,
+      password,
     }),
     verifyLogin: Joi.object().keys({
-      phone: Joi.string().length(11).required(),
-      verifyCode: Joi.string().length(6).required(),
+      phone,
+      verifyCode,
     }),
     register: Joi.object().keys({
-      nickname: Joi.string().max(11).required(),
-      // phone: Joi.when('email', { is: Joi.exist(), then: Joi.string().length(11), otherwise: Joi.string().length(11)
-      //   .required() }),
-      email: Joi.string().email().max(50)
-        .required(),
-      password: Joi.string().max(26).required(),
+      nickname,
+      email,
+      password,
     }),
     registerByPhone: Joi.object().keys({
-      nickname: Joi.string().max(11).required(),
-      phone: Joi.string().length(11).required(),
-      verifyCode: Joi.string().length(6).required(),
-      password: Joi.string().max(26).required(),
+      nickname,
+      phone,
+      verifyCode,
+      password,
     }),
-    logout: Joi.string().required(),
+    password,
   };
 };

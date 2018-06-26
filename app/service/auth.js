@@ -22,7 +22,7 @@ class AuthService extends Service {
     ctx.session.verifyCode = { timestamp, code, phone };
     // }
     // return result.data.reason;
-    return { verifyCode: code };
+    return { data: { verifyCode: code } };
   }
 
   /**
@@ -37,7 +37,7 @@ class AuthService extends Service {
     this.verifyCode(phone, verifyCode);
     const user = await app.model.User.findOrCreate({ where: { phone } });
     const token = ctx.service.token.create(user);
-    return { message: '验证登录成功', token };
+    return { message: '验证登录成功', data: { token } };
   }
 
   /**
@@ -56,8 +56,7 @@ class AuthService extends Service {
     if (user) {
       ctx.throw('此邮箱已被注册');
     }
-    await app.model.User.create({ nickname, email, password: require('crypto').createHash('md5').update(password)
-      .digest('hex') });
+    await app.model.User.create({ nickname, email, password: this.decodePassword(password) });
     return { message: '注册成功' };
   }
 
@@ -79,8 +78,7 @@ class AuthService extends Service {
     if (user) {
       ctx.throw('此手机号码已被注册');
     }
-    await app.model.User.create({ nickname, phone, password: require('crypto').createHash('md5').update(password)
-      .digest('hex') });
+    await app.model.User.create({ nickname, phone, password: this.decodePassword(password) });
     return { message: '注册成功' };
   }
 
@@ -101,12 +99,11 @@ class AuthService extends Service {
     if (!user) {
       ctx.throw('用户不存在');
     }
-    if (require('crypto').createHash('md5').update(password)
-      .digest('hex') !== user.password) {
+    if (this.decodePassword(password) !== user.password) {
       ctx.throw('密码不正确');
     }
     const token = ctx.service.token.create(user);
-    return { message: '登录成功', token };
+    return { message: '登录成功', data: { token } };
   }
 
   /**
@@ -119,6 +116,26 @@ class AuthService extends Service {
     const jwt = token.split(' ')[1];
     await ctx.service.token.invalid(jwt);
     return { message: '登出成功' };
+  }
+
+  /**
+   * @desc 设置密码
+   * @param {string} token  token
+   * @param {string} password  密码
+   * @return {object} msg
+   */
+  async setPassword(token, password) {
+    const ctx = this.ctx;
+    const jwt = token.split(' ')[1];
+    const result = await this.app.model.User.update({
+      password: this.decodePassword(password),
+    }, {
+      where: { $or: [
+        { id: ctx.state.user.id },
+      ] },
+    });
+    await ctx.service.token.invalid(jwt);
+    return result;
   }
 
   /**
@@ -142,6 +159,16 @@ class AuthService extends Service {
       ctx.throw('验证码已超时');
     }
     ctx.session.verifyCode = null;
+  }
+
+  /**
+   * @desc 密码加密
+   * @param {string} password  密码
+   * @return {string} md5
+   */
+  decodePassword(password) {
+    return require('crypto').createHash('md5').update(password)
+      .digest('hex');
   }
 }
 

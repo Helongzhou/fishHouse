@@ -28,7 +28,6 @@ module.exports = (mode = 1) => {
       const { data } = ctx.service.token.verify(jwtToken);
       if (data) {
         ctx.state.user = data;
-        console.log(data);
       }
     } catch (error) {
       if (mode === 1) {

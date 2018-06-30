@@ -22,22 +22,34 @@ class AuthService extends Service {
     ctx.session.verifyCode = { timestamp, code, phone };
     // }
     // return result.data.reason;
-    return { data: { verifyCode: code } };
+    return { code };
+  }
+
+  /**
+   * @desc 获取图形验证码
+   * @return {object} text&&data
+   */
+  async getSvgCode() {
+    const svgCaptcha = require('svg-captcha');
+    const { text, data } = svgCaptcha.createMathExpr({ size: 4, noise: 2, color: true, background: '#cc9966' });
+    console.log(text, data);
+    return { data };
   }
 
   /**
    * @desc 验证登录
    * @param {string} phone 有效手机号
    * @param {string} verifyCode 有效验证码
+   * @param {number} role  用户角色 0：超级管理员 1：大版主 2：小版主 3：普通用户
    * @return {object} token
    */
-  async verifyLogin(phone, verifyCode) {
+  async verifyLogin(phone, verifyCode, role) {
     const ctx = this.ctx;
     const app = this.app;
     this.verifyCode(phone, verifyCode);
-    const user = await app.model.User.findOrCreate({ where: { phone } });
+    const user = await app.model.User.findOrCreate({ where: { phone } }, { role });
     const token = ctx.service.token.create(user);
-    return { message: '验证登录成功', data: { token } };
+    return { message: '验证登录成功', token };
   }
 
   /**
@@ -45,9 +57,10 @@ class AuthService extends Service {
    * @param {string} nickname 昵称
    * @param {string} email  邮箱
    * @param {string} password  密码
+   * @param {number} role  用户角色 0：超级管理员 1：大版主 2：小版主 3：普通用户
    * @return {object} msg
    */
-  async register(nickname, email, password) {
+  async register(nickname, email, password, role) {
     const app = this.app;
     const ctx = this.ctx;
     const user = await this.app.model.User.findOne({
@@ -56,7 +69,7 @@ class AuthService extends Service {
     if (user) {
       ctx.throw('此邮箱已被注册');
     }
-    await app.model.User.create({ nickname, email, password: this.decodePassword(password) });
+    await app.model.User.create({ nickname, email, password: this.decodePassword(password), role });
     return { message: '注册成功' };
   }
 
@@ -66,9 +79,10 @@ class AuthService extends Service {
    * @param {string} phone  手机号
    * @param {string} verifyCode 有效验证码
    * @param {string} password  密码
+   * @param {number} role 角色：0管理员，1普通用户
    * @return {object} msg
    */
-  async registerByPhone(nickname, phone, verifyCode, password) {
+  async registerByPhone(nickname, phone, verifyCode, password, role) {
     const app = this.app;
     const ctx = this.ctx;
     this.verifyCode(phone, verifyCode);
@@ -78,7 +92,7 @@ class AuthService extends Service {
     if (user) {
       ctx.throw('此手机号码已被注册');
     }
-    await app.model.User.create({ nickname, phone, password: this.decodePassword(password) });
+    await app.model.User.create({ nickname, phone, password: this.decodePassword(password), role });
     return { message: '注册成功' };
   }
 
@@ -103,7 +117,7 @@ class AuthService extends Service {
       ctx.throw('密码不正确');
     }
     const token = ctx.service.token.create(user);
-    return { message: '登录成功', data: { token } };
+    return { message: '登录成功', token };
   }
 
   /**
@@ -162,7 +176,7 @@ class AuthService extends Service {
   }
 
   /**
-   * @desc 密码加密
+   * @desc 密码md5加密
    * @param {string} password  密码
    * @return {string} md5
    */

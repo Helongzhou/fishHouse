@@ -2,9 +2,10 @@
 
 exports.sequelize = {
   dialect: 'mysql',
-  database: 'fishHouse-unittest',
+  database: 'fish_house',
   host: 'localhost',
-  port: '5432',
-  username: 'fishHouse',
+  port: '3306',
+  username: 'root',
   password: '',
+  timezone: '+08:00',
 };

@@ -5,6 +5,10 @@
  */
 module.exports = app => {
   require('./router/auth')(app);
-  // const { router, controller } = app;
-  // router.get('/auth/message', controller.auth.login.index);
+  require('./router/article')(app);
+  require('./router/forum')(app);
+  // GET - 查看;
+  // POST - 创建;
+  // PUT - 编辑;
+  // DELETE - 删除;
 };

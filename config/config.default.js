@@ -10,7 +10,7 @@ module.exports = appInfo => {
   config.middleware = [ 'notfoundHandler', 'errorHandler', 'identify' ];
 
   config.identify = {
-    ignore: [ '/auth/register', '/auth/login' ],
+    ignore: [ '/auth/register', '/auth/login', '/auth/verify' ],
   };
 
   config.sequelize = {
@@ -21,10 +21,6 @@ module.exports = appInfo => {
     username: 'root',
     password: '',
     timezone: '+08:00',
-    define: {
-      freezeTableName: false,
-      timestamp: false,
-    },
   };
 
   config.redis = {

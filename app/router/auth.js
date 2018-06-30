@@ -2,8 +2,10 @@
 
 module.exports = app => {
   const { router, controller } = app;
-  // 获取验证码
-  router.get('/auth/message', controller.auth.getVerifyCode);
+  // 获取短信验证码
+  router.get('/auth/verify/message', controller.auth.getVerifyCode);
+  // 获取图形验证码
+  router.get('/auth/verify/svg', controller.auth.getSvgCode);
   // 账号登录
   router.post('/auth/login', controller.auth.login);
   // 验证登录

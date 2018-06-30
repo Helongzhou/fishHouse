@@ -6,7 +6,7 @@ module.exports = () => {
       await next();
     } catch (error) {
       ctx.status = error.status || 500;
-      ctx.body = error;
+      ctx.body = { message: error.message };
     }
   };
 };

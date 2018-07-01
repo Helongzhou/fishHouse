@@ -11,7 +11,6 @@ module.exports = app => {
       description: description.required(),
     }),
     update: Joi.object().keys({
-      id,
       name,
       description,
     }),

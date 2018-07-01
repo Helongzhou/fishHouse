@@ -28,7 +28,7 @@ class ForumService extends Service {
    * @param {number} id 论坛id
    * @param {string} name 论坛名字
    * @param {string} description 描述
-   * @return {object} forum info
+   * @return {array} 1:成功 0:失败
    */
   async update(id, name, description) {
     const app = this.app;
@@ -38,7 +38,7 @@ class ForumService extends Service {
   /**
    * @desc 删除论坛
    * @param {number} id 论坛id
-   * @return {object} forum info
+   * @return {array} 1:成功 0:失败
    */
   async destroy(id) {
     const app = this.app;

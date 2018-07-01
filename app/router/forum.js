@@ -14,7 +14,7 @@ module.exports = app => {
   // 查看明细
   //   router.get('/admin/forum/:id', controller.forum.info);
   // 搜索
-//   router.get('/admin/forum/:keywords/search', controller.forum.search);
+  //   router.get('/admin/forum/:keywords/search', controller.forum.search);
   // POST - 增;
   // DELETE - 删;
   // PUT - 改;

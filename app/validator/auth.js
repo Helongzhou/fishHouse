@@ -10,8 +10,6 @@ module.exports = app => {
   const nickname = Joi.string().max(11).required();
   const email = Joi.string().email().max(50)
     .required();
-  const role = Joi.number().integer().min(0)
-    .max(9);
   return {
     phone,
     login: Joi.object().keys({
@@ -21,20 +19,17 @@ module.exports = app => {
     verifyLogin: Joi.object().keys({
       phone,
       verifyCode,
-      role,
     }),
     register: Joi.object().keys({
       nickname,
       email,
       password,
-      role,
     }),
     registerByPhone: Joi.object().keys({
       nickname,
       phone,
       verifyCode,
       password,
-      role,
     }),
     password,
   };

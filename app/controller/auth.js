@@ -15,20 +15,20 @@ class AuthController extends Controller {
 
   async verifyLogin(ctx) {
     const { value } = ctx.validate(this.app.validator.auth.verifyLogin, ctx.request.body);
-    const { phone, verifyCode, role } = value;
-    ctx.body = await ctx.service.auth.verifyLogin(phone, verifyCode, role);
+    const { phone, verifyCode } = value;
+    ctx.body = await ctx.service.auth.verifyLogin(phone, verifyCode);
   }
 
   async register(ctx) {
     const { value } = ctx.validate(this.app.validator.auth.register, ctx.request.body);
-    const { nickname, email, password, role } = value;
-    ctx.body = await ctx.service.auth.register(nickname, email, password, role);
+    const { nickname, email, password } = value;
+    ctx.body = await ctx.service.auth.register(nickname, email, password);
   }
 
   async registerByPhone(ctx) {
     const { value } = ctx.validate(this.app.validator.auth.registerByPhone, ctx.request.body);
-    const { nickname, phone, verifyCode, password, role } = value;
-    ctx.body = await ctx.service.auth.registerByPhone(nickname, phone, verifyCode, password, role);
+    const { nickname, phone, verifyCode, password } = value;
+    ctx.body = await ctx.service.auth.registerByPhone(nickname, phone, verifyCode, password);
   }
 
   async login(ctx) {

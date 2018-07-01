@@ -16,7 +16,7 @@ module.exports = app => {
       type: STRING(100),
       allowNull: false,
     },
-    forum_id: {// 所属大板块id
+    forum_id: {// 所属论坛id
       type: INTEGER,
       allowNull: false,
     },

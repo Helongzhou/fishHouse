@@ -40,14 +40,13 @@ class AuthService extends Service {
    * @desc 验证登录
    * @param {string} phone 有效手机号
    * @param {string} verifyCode 有效验证码
-   * @param {number} role  用户角色 0：超级管理员 1：大版主 2：小版主 3：普通用户
    * @return {object} token
    */
-  async verifyLogin(phone, verifyCode, role) {
+  async verifyLogin(phone, verifyCode) {
     const ctx = this.ctx;
     const app = this.app;
     this.verifyCode(phone, verifyCode);
-    const user = await app.model.User.findOrCreate({ where: { phone } }, { role });
+    const user = await app.model.User.findOrCreate({ where: { phone } });
     const token = ctx.service.token.create(user);
     return { message: '验证登录成功', token };
   }
@@ -57,10 +56,9 @@ class AuthService extends Service {
    * @param {string} nickname 昵称
    * @param {string} email  邮箱
    * @param {string} password  密码
-   * @param {number} role  用户角色 0：超级管理员 1：大版主 2：小版主 3：普通用户
    * @return {object} msg
    */
-  async register(nickname, email, password, role) {
+  async register(nickname, email, password) {
     const app = this.app;
     const ctx = this.ctx;
     const user = await this.app.model.User.findOne({
@@ -69,7 +67,7 @@ class AuthService extends Service {
     if (user) {
       ctx.throw('此邮箱已被注册');
     }
-    await app.model.User.create({ nickname, email, password: this.decodePassword(password), role });
+    await app.model.User.create({ nickname, email, password: this.decodePassword(password) });
     return { message: '注册成功' };
   }
 
@@ -79,10 +77,9 @@ class AuthService extends Service {
    * @param {string} phone  手机号
    * @param {string} verifyCode 有效验证码
    * @param {string} password  密码
-   * @param {number} role 角色：0管理员，1普通用户
    * @return {object} msg
    */
-  async registerByPhone(nickname, phone, verifyCode, password, role) {
+  async registerByPhone(nickname, phone, verifyCode, password) {
     const app = this.app;
     const ctx = this.ctx;
     this.verifyCode(phone, verifyCode);
@@ -92,7 +89,7 @@ class AuthService extends Service {
     if (user) {
       ctx.throw('此手机号码已被注册');
     }
-    await app.model.User.create({ nickname, phone, password: this.decodePassword(password), role });
+    await app.model.User.create({ nickname, phone, password: this.decodePassword(password) });
     return { message: '注册成功' };
   }
 

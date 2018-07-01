@@ -25,6 +25,7 @@ module.exports = app => {
     role: {// 用户角色 0：超级管理员 1：大版主 2：小版主 3：普通用户
       type: INTEGER,
       allowNull: false,
+      defaultValue: 3,
     },
     points: {// 积分 表示用户活跃程度 发帖+10 评论+2
       type: INTEGER,

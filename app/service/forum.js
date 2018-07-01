@@ -20,7 +20,11 @@ class ForumService extends Service {
    */
   async list() {
     const app = this.app;
-    return await app.model.Forum.findAll({ attributes: [ 'id', 'name', 'description' ] });
+    return await app.model.Forum.findAll({ attributes: [ 'id', 'name', 'description' ], include: [{
+      model: this.app.model.Section,
+      as: 'sections',
+      attributes: [ 'name', 'description' ],
+    }] });
   }
 
   /**

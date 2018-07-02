@@ -7,10 +7,14 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_2018@SZXmeilin';
 
   // add your config here
-  config.middleware = [ 'notfoundHandler', 'errorHandler', 'identify' ];
+  config.middleware = [ 'notfoundHandler', 'errorHandler', 'identify', 'adminIdentify' ];
 
   config.identify = {
     ignore: [ '/auth/register', '/auth/login', '/auth/verify' ],
+  };
+
+  config.adminIdentify = {
+    match: '/admin',
   };
 
   config.sequelize = {

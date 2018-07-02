@@ -39,6 +39,7 @@ module.exports = app => {
     },
     nickname: {
       type: STRING(100),
+      unique: true,
       allowNull: false,
       defaultValue: UUIDV4,
     },
@@ -49,7 +50,8 @@ module.exports = app => {
     },
     avater: {// 头像
       type: STRING(100),
-      allowNull: true,
+      allowNull: false,
+      defaultValue: UUIDV4,
     },
   }, {
     freezeTableName: true,

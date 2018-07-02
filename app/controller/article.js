@@ -4,16 +4,20 @@ const Controller = require('egg').Controller;
 
 class ArticleController extends Controller {
 
-  async update(ctx) {
-    ctx.body = await ctx.service.article.update();
+  async create(ctx) {
+    const { value: { title, content, section_id } } = ctx.validate(this.app.validator.article.create, ctx.request.body);
+    ctx.body = await ctx.service.article.create(title, content, section_id);
   }
 
-  async create(ctx) {
-    ctx.body = await ctx.service.article.create();
+  async update(ctx) {
+    const { value: { title, content } } = ctx.validate(this.app.validator.article.update, ctx.request.body);
+    const { value: id } = ctx.validate(this.app.validator.article.id, ctx.params.id);
+    ctx.body = await ctx.service.article.update(title, content, id);
   }
 
   async info(ctx) {
-    ctx.body = await ctx.service.article.info();
+    const { value: id } = ctx.validate(this.app.validator.article.id, ctx.params.id);
+    ctx.body = await ctx.service.article.info(id);
   }
 
   async list(ctx) {

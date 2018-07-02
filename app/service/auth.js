@@ -44,11 +44,10 @@ class AuthService extends Service {
    */
   async verifyLogin(phone, verifyCode) {
     const ctx = this.ctx;
-    const app = this.app;
     this.verifyCode(phone, verifyCode);
-    const user = await app.model.User.findOrCreate({ where: { phone } });
+    const user = await ctx.service.user.findOrCreate(phone);
     const token = ctx.service.token.create(user);
-    return { message: '验证登录成功', token };
+    return { token };
   }
 
   /**
@@ -59,16 +58,13 @@ class AuthService extends Service {
    * @return {object} msg
    */
   async register(nickname, email, password) {
-    const app = this.app;
     const ctx = this.ctx;
-    const user = await this.app.model.User.findOne({
-      where: { email },
-    });
+    const user = await ctx.service.user.info({ email });
     if (user) {
       ctx.throw('此邮箱已被注册');
     }
-    await app.model.User.create({ nickname, email, password: this.decodePassword(password) });
-    return { message: '注册成功' };
+    const result = await ctx.service.user.create({ nickname, email, password });
+    return result.id;
   }
 
   /**
@@ -80,17 +76,14 @@ class AuthService extends Service {
    * @return {object} msg
    */
   async registerByPhone(nickname, phone, verifyCode, password) {
-    const app = this.app;
     const ctx = this.ctx;
     this.verifyCode(phone, verifyCode);
-    const user = await this.app.model.User.findOne({
-      where: { phone },
-    });
+    const user = await ctx.service.user.info({ phone });
     if (user) {
       ctx.throw('此手机号码已被注册');
     }
-    await app.model.User.create({ nickname, phone, password: this.decodePassword(password) });
-    return { message: '注册成功' };
+    const result = await ctx.service.user.create({ nickname, phone, password });
+    return result.id;
   }
 
   /**
@@ -101,12 +94,7 @@ class AuthService extends Service {
    */
   async login(usename, password) {
     const ctx = this.ctx;
-    const user = await this.app.model.User.findOne({
-      where: { $or: [
-        { email: usename },
-        { phone: usename },
-      ] },
-    });
+    const user = await ctx.service.user.info({ phone: usename, email: usename });
     if (!user) {
       ctx.throw('用户不存在');
     }
@@ -138,13 +126,7 @@ class AuthService extends Service {
   async setPassword(token, password) {
     const ctx = this.ctx;
     const jwt = token.split(' ')[1];
-    const result = await this.app.model.User.update({
-      password: this.decodePassword(password),
-    }, {
-      where: { $or: [
-        { id: ctx.state.user.id },
-      ] },
-    });
+    const result = await ctx.service.user.setPassword(password);
     await ctx.service.token.invalid(jwt);
     return result;
   }

@@ -15,7 +15,7 @@ module.exports = app => {
   // 删帖
   router.delete('/article/:id', controller.article.delete);
   // 点赞/取消点赞
-  router.put('/article/like/:id', controller.article.like);
+  // router.put('/article/like/:id', controller.article.like);
 
   // POST - 增;
   // DELETE - 删;

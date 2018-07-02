@@ -9,6 +9,7 @@ module.exports = app => {
       primaryKey: true,
     },
     name: {
+      unique: true,
       type: STRING(26),
       allowNull: false,
     },

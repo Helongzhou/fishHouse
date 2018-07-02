@@ -23,7 +23,7 @@ class ForumService extends Service {
     return await app.model.Forum.findAll({ attributes: [ 'id', 'name', 'description' ], include: [{
       model: this.app.model.Section,
       as: 'sections',
-      attributes: [ 'name', 'description' ],
+      attributes: [ 'id', 'name', 'description' ],
     }] });
   }
 

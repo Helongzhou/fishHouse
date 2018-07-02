@@ -11,9 +11,9 @@ class TokenService extends Service {
    */
   create(userInfo) {
     const app = this.app;
-    const { id, nickname, phone, email } = userInfo;
+    const { id, nickname, sex, avater, phone, email } = userInfo;
     const token = app.jwt.sign({
-      data: { id, nickname, phone, email },
+      data: { id, nickname, sex, avater, phone, email },
       exp: app.config.jwt.defaultExp, // 默认配置一天失效
       iat: Math.floor(Date.now() / 1000) - 1800, // 提前3小时有效， 特别是在我们办公室电脑的时间不准确时便于测试
     }, app.config.jwt.secret);

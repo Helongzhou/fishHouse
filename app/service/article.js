@@ -37,16 +37,26 @@ class ArticleService extends Service {
    */
   async info(id) {
     const app = this.app;
-    return await app.model.Article.findOne({ attributes: [ 'user_id', 'user_nickname', 'user_avater', 'title', 'content', 'like', 'created_at', 'updated_at' ] }, { where: { id } });
+    const ctx = this.ctx;
+    const info = await app.model.Article.findOne({ where: { id } });
+    if (!info) {
+      ctx.throw('帖子不存在');
+    }
+    await app.model.Article.read(id);
+    const { user_id, user_nickname, user_avater, title, content, like, read, comment, created_at, updated_at } = info;
+    return { user_id, user_nickname, user_avater, title, content, like, read, comment, created_at, updated_at };
   }
 
   /**
    * @desc 浏览帖子列表
-   * @return {object} info
+   * @param {string} page  第几页
+   * @param {string} per_page  每页显示的贴子数
+   * @return {array} list
    */
-  async list() {
+  async list(page, per_page) {
+    console.log(page, per_page);
     const app = this.app;
-    return await app.model.Article.findAndCountAll({ attributes: [ 'user_id', 'user_nickname', 'user_avater', 'id', 'title', 'content', 'like', 'created_at', 'updated_at' ] });
+    return await app.model.Article.findAndCountAll({ attributes: [ 'user_id', 'user_nickname', 'user_avater', 'id', 'title', 'content', 'like', 'read', 'comment', 'created_at', 'updated_at' ] });
   }
 
 }

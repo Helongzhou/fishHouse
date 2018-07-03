@@ -43,7 +43,17 @@ module.exports = app => {
       type: INTEGER.UNSIGNED,
       allowNull: false,
     },
-    like: {
+    like: {// 赞数量
+      type: INTEGER.UNSIGNED,
+      defaultValue: 0,
+      allowNull: false,
+    },
+    read: {// 阅读量
+      type: INTEGER.UNSIGNED,
+      defaultValue: 0,
+      allowNull: false,
+    },
+    comment: {// 评论数
       type: INTEGER.UNSIGNED,
       defaultValue: 0,
       allowNull: false,
@@ -54,6 +64,26 @@ module.exports = app => {
     timestamps: true,
     paranoid: true,
   });
+
+  Model.comment = function(id) {
+    this.increment({ comment: 1 },
+      { where: { id } });
+  };
+
+  Model.read = function(id) {
+    this.increment({ read: 1 },
+      { where: { id } });
+  };
+
+  Model.like = function(id) {
+    this.increment({ like: 1 },
+      { where: { id } });
+  };
+
+  Model.unlike = function(id) {
+    this.decrement({ like: 1 },
+      { where: { id } });
+  };
 
   Model.associate = function() {
     const { comment } = app.model.models;

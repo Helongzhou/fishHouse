@@ -21,7 +21,9 @@ class ArticleController extends Controller {
   }
 
   async list(ctx) {
-    ctx.body = await ctx.service.article.list();
+    console.log(ctx.query);
+    const { value: { page, per_page } } = ctx.validate(this.app.validator.article.paging, ctx.query);
+    ctx.body = await ctx.service.article.list(page, per_page);
   }
 
   async search(ctx) {

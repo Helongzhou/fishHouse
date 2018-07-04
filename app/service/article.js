@@ -15,11 +15,11 @@ class ArticleService extends Service {
     const app = this.app;
     const ctx = this.ctx;
     const result = await app.model.Article.create({ title, content, section_id, user_id: ctx.state.user.id, user_nickname: ctx.state.user.nickname, user_avater: ctx.state.user.avater });
-    return result.id;
+    return { id: result.id };
   }
 
   /**
-   * @desc 编辑
+   * @desc 编辑帖子
    * @param {string} title 标题
    * @param {string} content  内容
    * @param {number} id  帖子ID
@@ -27,7 +27,8 @@ class ArticleService extends Service {
    */
   async update(title, content, id) {
     const app = this.app;
-    return await app.model.Article.update({ title, content }, { where: { id } });
+    const ctx = this.ctx;
+    return await app.model.Article.update({ title, content }, { where: { user_id: ctx.state.user.id, id } });
   }
 
   /**

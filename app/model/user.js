@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = app => {
-  const { INTEGER, STRING, UUIDV4 } = app.Sequelize;
+  const { INTEGER, STRING, UUIDV4, DataTypes } = app.Sequelize;
   const Model = app.model.define('user', {
     id: {
       type: INTEGER,
@@ -23,9 +23,9 @@ module.exports = app => {
       allowNull: true,
     },
     role: {// 用户角色 0：超级管理员 1：大版主 2：小版主 3：普通用户
-      type: INTEGER,
+      type: DataTypes.INTEGER(1).UNSIGNED,
       allowNull: false,
-      defaultValue: 3,
+      defaultValue: '3',
     },
     points: {// 积分 表示用户活跃程度 发帖+10 评论+2
       type: INTEGER,

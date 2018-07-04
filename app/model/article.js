@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = app => {
-  const { INTEGER, STRING, BOOLEAN } = app.Sequelize;
+  const { INTEGER, STRING, DataTypes } = app.Sequelize;
   const Model = app.model.define('article', {
     id: {
       type: INTEGER,
@@ -30,14 +30,14 @@ module.exports = app => {
       allowNull: false,
     },
     good: { // 是否精华
-      type: BOOLEAN,
-      defaultValue: false,
+      type: DataTypes.ENUM('true', 'false'),
       allowNull: false,
+      defaultValue: 'true',
     },
     top: {// 是否置顶
-      type: BOOLEAN,
-      defaultValue: false,
+      type: DataTypes.ENUM('true', 'false'),
       allowNull: false,
+      defaultValue: 'true',
     },
     section_id: {// 小版块id
       type: INTEGER.UNSIGNED,

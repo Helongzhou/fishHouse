@@ -21,17 +21,18 @@ class ArticleController extends Controller {
   }
 
   async list(ctx) {
-    console.log(ctx.query);
-    const { value: { page, per_page } } = ctx.validate(this.app.validator.article.paging, ctx.query);
-    ctx.body = await ctx.service.article.list(page, per_page);
+    const { value: { page, per_page, section_id, type } } = ctx.validate(this.app.validator.article.list, ctx.query);
+    ctx.body = await ctx.service.article.list(page, per_page, section_id, type);
   }
 
   async search(ctx) {
-    ctx.body = await ctx.service.article.search();
+    const { value } = ctx.validate(this.app.validator.article.keyword, ctx.params.keyword);
+    ctx.body = await ctx.service.article.search(value);
   }
 
-  async delete(ctx) {
-    ctx.body = await ctx.service.article.delete();
+  async destroy(ctx) {
+    const { value } = ctx.validate(this.app.validator.article.id, ctx.params.id);
+    ctx.body = await ctx.service.article.destroy(value);
   }
 
   async like(ctx) {

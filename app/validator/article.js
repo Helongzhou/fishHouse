@@ -12,8 +12,12 @@ module.exports = app => {
     .required(); // 文章id
   const page = Joi.string().regex(/^\+?[1-9][0-9]*$/, 'numbers').required()
     .required(); // 页码
-  const per_page = Joi.string().regex(/^([1-9]*){1,2}$/, 'numbers')
-    .required(); // 分页大小
+  const per_page = Joi.string().regex(/^\+?[1-9][0-9]*$/, 'numbers').required()
+    .required();// 分页大小
+  const type = Joi.string().regex(/^\+?[0-9]$/, 'numbers').required()
+    .required();// 类型：0 最新 1 热门 2 精华 3 置顶
+  const keyword = Joi.string().min(2).max(30)
+    .required();
   return {
     create: Joi.object().keys({
       title,
@@ -25,9 +29,12 @@ module.exports = app => {
       content,
     }),
     id,
-    paging: Joi.object().keys({
+    list: Joi.object().keys({
       page,
       per_page,
+      section_id,
+      type,
     }),
+    keyword,
   };
 };

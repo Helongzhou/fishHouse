@@ -7,13 +7,13 @@ module.exports = app => {
   // 查看
   router.get('/article/:id', controller.article.info);
   // 搜索
-  router.get('/article/:keywords/search', controller.article.search);
+  router.get('/article/:keyword/search', controller.article.search);
   // 编辑
   router.put('/article/:id', controller.article.update);
   // 发帖
   router.post('/article', controller.article.create);
   // 删帖
-  router.delete('/article/:id', controller.article.delete);
+  router.delete('/article/:id', controller.article.destroy);
   // 点赞/取消点赞
   // router.put('/article/like/:id', controller.article.like);
 

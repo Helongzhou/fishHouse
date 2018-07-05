@@ -32,12 +32,12 @@ module.exports = app => {
     good: { // 是否精华
       type: DataTypes.ENUM('true', 'false'),
       allowNull: false,
-      defaultValue: 'true',
+      defaultValue: 'false',
     },
     top: {// 是否置顶
       type: DataTypes.ENUM('true', 'false'),
       allowNull: false,
-      defaultValue: 'true',
+      defaultValue: 'false',
     },
     section_id: {// 小版块id
       type: INTEGER.UNSIGNED,
@@ -65,10 +65,10 @@ module.exports = app => {
     paranoid: true,
   });
 
-  Model.comment = function(id) {
-    this.increment({ comment: 1 },
-      { where: { id } });
-  };
+  // Model.comment = async function(id) {
+  //   return await this.increment({ comment: 1 },
+  //     { where: { id } });
+  // };
 
   Model.read = function(id) {
     this.increment({ read: 1 },

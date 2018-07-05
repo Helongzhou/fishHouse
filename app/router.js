@@ -8,6 +8,7 @@ module.exports = app => {
   require('./router/article')(app);
   require('./router/forum')(app);
   require('./router/section')(app);
+  require('./router/comment')(app);
   // GET - 查看;
   // POST - 创建;
   // PUT - 编辑;

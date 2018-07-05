@@ -144,6 +144,22 @@ class ArticleService extends Service {
     });
   }
 
+
+  /**
+   * @desc 帖子评论+1
+   * @param {string} id  帖子id
+   */
+  async comment(id) {
+    const app = this.app;
+    const ctx = this.ctx;
+    const result = await app.model.Article.increment({ comment: 1 },
+      { where: { id } });
+    if (result[0][1] === 0) {
+      ctx.throw('帖子不存在');
+    }
+  }
+
+
 }
 
 module.exports = ArticleService;

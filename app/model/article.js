@@ -65,29 +65,15 @@ module.exports = app => {
     paranoid: true,
   });
 
-  // Model.comment = async function(id) {
-  //   return await this.increment({ comment: 1 },
-  //     { where: { id } });
-  // };
-
   Model.read = function(id) {
     this.increment({ read: 1 },
-      { where: { id } });
-  };
-
-  Model.like = function(id) {
-    this.increment({ like: 1 },
-      { where: { id } });
-  };
-
-  Model.unlike = function(id) {
-    this.decrement({ like: 1 },
       { where: { id } });
   };
 
   Model.associate = function() {
     const { comment } = app.model.models;
     this.hasMany(comment, { foreignKey: 'article_id', as: 'comments' });
+    // this.hasMany(like, { foreignKey: 'article_id', as: 'likes' });
   };
 
   return Model;

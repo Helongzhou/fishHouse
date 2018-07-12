@@ -47,7 +47,8 @@ class ArticleService extends Service {
       ctx.throw('帖子不存在');
     }
     await app.model.Article.read(id);
-    return info;
+    const isLike = await ctx.service.like.exist({ article_id: id });
+    return Object.assign(info.dataValues, { isLike });
   }
 
   /**
@@ -159,6 +160,34 @@ class ArticleService extends Service {
     }
   }
 
+  /**
+   * @desc 点赞+1
+   * @param {string} id  帖子id
+   */
+  async like(id) {
+    const app = this.app;
+    const ctx = this.ctx;
+    const result = await app.model.Article.increment({ like: 1 },
+      { where: { id } });
+    if (result[0][1] === 0) {
+      ctx.throw('帖子不存在');
+    }
+  }
+
+
+  /**
+   * @desc 点赞-1
+   * @param {string} id  帖子id
+   */
+  async unlike(id) {
+    const app = this.app;
+    const ctx = this.ctx;
+    const result = await app.model.Article.decrement({ like: 1 },
+      { where: { id } });
+    if (result[0][1] === 0) {
+      ctx.throw('帖子不存在');
+    }
+  }
 
 }
 

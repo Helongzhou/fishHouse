@@ -37,12 +37,18 @@ class CommentService extends Service {
    */
   async list(article_id, page, per_page) {
     const app = this.app;
+    const ctx = this.ctx;
     const limit = Number(per_page);
     const offset = (Number(page) - 1) * limit;
-    return await app.model.Comment.findAll({
+    const comment = await app.model.Comment.findAll({
       limit,
       offset,
-      attributes: [ 'id', 'user_avater', 'user_nickname', 'user_id', 'to_uid', 'author', 'content', 'created_at' ] });
+      attributes: [ 'id', 'user_avater', 'user_nickname', 'user_id', 'to_uid', 'author', 'content', 'like', 'created_at' ] });
+    const result = Promise.all(comment.map(async item => {
+      item.dataValues.isLike = await ctx.service.like.exist({ comment_id: item.dataValues.id });
+      return item;
+    }));
+    return result;
   }
 
   /**
@@ -58,6 +64,36 @@ class CommentService extends Service {
       ctx.throw('不能删除他人的评论！');
     }
     return await app.model.Comment.destroy({ where: { id } });
+  }
+
+
+  /**
+   * @desc 点赞+1
+   * @param {string} id  评论id
+   */
+  async like(id) {
+    const app = this.app;
+    const ctx = this.ctx;
+    const result = await app.model.Comment.increment({ like: 1 },
+      { where: { id } });
+    if (result[0][1] === 0) {
+      ctx.throw('评论不存在');
+    }
+  }
+
+
+  /**
+   * @desc 点赞-1
+   * @param {string} id  评论id
+   */
+  async unlike(id) {
+    const app = this.app;
+    const ctx = this.ctx;
+    const result = await app.model.Comment.decrement({ like: 1 },
+      { where: { id } });
+    if (result[0][1] === 0) {
+      ctx.throw('评论不存在');
+    }
   }
 
 }

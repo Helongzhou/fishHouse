@@ -10,7 +10,7 @@ describe('test/app/controller/forum.test.js', () => {
   const code = genRandom(111111, 999999);
   let article_id;
 
-  it.only('POST create article with attr should return article id', () => {
+  it('POST create article with attr should return article id', () => {
     return app.httpRequest()
       .post(`${base_path}`)
       .set('Authorization', Authorization)
@@ -26,7 +26,7 @@ describe('test/app/controller/forum.test.js', () => {
       .expect(200);
   });
 
-  it.only('PUT update article with attr should return 1', () => {
+  it('PUT update article with attr should return 1', () => {
     return app.httpRequest()
       .put(`${base_path}/${article_id}`)
       .set('Authorization', Authorization)
@@ -41,7 +41,7 @@ describe('test/app/controller/forum.test.js', () => {
       .expect(200);
   });
 
-  it.only('GET check article info with attr should return article info', () => {
+  it('GET check article info with attr should return article info', () => {
     return app.httpRequest()
       .get(`${base_path}/${article_id}`)
       .set('Authorization', Authorization)
@@ -51,7 +51,7 @@ describe('test/app/controller/forum.test.js', () => {
       .expect(200);
   });
 
-  it.only('GET check article with attr should return article list', () => {
+  it('GET check article with attr should return article list', () => {
     return app.httpRequest()
       .get(`${base_path}?page=1&per_page=10&section_id=1&type=0`)
       .set('Authorization', Authorization)
@@ -62,7 +62,7 @@ describe('test/app/controller/forum.test.js', () => {
       .expect(200);
   });
 
-  it.only('GET search article with keyword should return article list', () => {
+  it('GET search article with keyword should return article list', () => {
     return app.httpRequest()
       .get(`${base_path}/TEST_NAME_/search`)
       .set('Authorization', Authorization)
@@ -73,7 +73,7 @@ describe('test/app/controller/forum.test.js', () => {
       .expect(200);
   });
 
-  it.only('DELETE destroy article with id should return 1', () => {
+  it('DELETE destroy article with id should return 1', () => {
     return app.httpRequest()
       .delete(`${base_path}/${article_id}`)
       .set('Authorization', Authorization)

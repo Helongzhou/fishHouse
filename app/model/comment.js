@@ -48,10 +48,10 @@ module.exports = app => {
     timestamps: true,
   });
 
-  // Model.associate = function() {
-  //   const { like } = app.model.models;
-  //   this.hasMany(like, { foreignKey: 'type_id', as: 'likes' });
-  // };
+  Model.associate = function() {
+    // const { like } = app.model.models;
+    // this.hasMany(like, { foreignKey: 'comment_id', as: 'likes' });
+  };
 
   return Model;
 };

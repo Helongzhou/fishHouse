@@ -61,7 +61,7 @@ module.exports = appInfo => {
   // };
 
   config.jwt = {
-    secret: '123456',
+    secret: '2018@SZX',
     defaultExp: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 1), // 默认过期时间1天
   };
 

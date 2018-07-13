@@ -63,6 +63,7 @@ module.exports = appInfo => {
   config.jwt = {
     secret: '2018@SZX',
     defaultExp: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 1), // 默认过期时间1天
+    defaultIat: Math.floor(Date.now() / 1000) - 1800, // 提前3小时有效,在办公室电脑时间不准确时便于测试
   };
 
   return config;

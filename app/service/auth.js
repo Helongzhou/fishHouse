@@ -11,8 +11,7 @@ class AuthService extends Service {
    */
   async getVerifyCode(phone) {
     const ctx = this.ctx;
-    const genRandom = (floor, ceil) => parseInt(Math.random() * (ceil - floor + 1) + floor);
-    const code = genRandom(111111, 999999);
+    const code = ctx.helper.genRandom(6);
     // const result = await ctx.curl(`http://v.juhe.cn/sms/send?mobile=${phone}&tpl_id=82936&tpl_value=%23code%23%3D${code}&key=0af922b4781528a32a90156e1f07bcb7`, {
     //   method: 'GET',
     //   dataType: 'json',
@@ -160,8 +159,8 @@ class AuthService extends Service {
    * @return {string} md5
    */
   decodePassword(password) {
-    return require('crypto').createHash('md5').update(password)
-      .digest('hex');
+    const ctx = this.ctx;
+    return ctx.helper.md5(password);
   }
 }
 

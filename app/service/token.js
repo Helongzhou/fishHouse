@@ -15,7 +15,7 @@ class TokenService extends Service {
     const token = app.jwt.sign({
       data: { id, nickname, sex, avater, phone, email },
       exp: app.config.jwt.defaultExp, // 默认配置一天失效
-      iat: Math.floor(Date.now() / 1000) - 1800, // 提前3小时有效， 特别是在我们办公室电脑的时间不准确时便于测试
+      iat: app.config.jwt.defaultIat, // 提前3小时有效,在办公室电脑时间不准确时便于测试
     }, app.config.jwt.secret);
     return token;
   }

@@ -2,6 +2,7 @@
 
 const Service = require('egg').Service;
 
+
 class UserService extends Service {
 
   /**
@@ -63,8 +64,8 @@ class UserService extends Service {
    * @return {string} md5
    */
   decodePassword(password) {
-    return require('crypto').createHash('md5').update(password)
-      .digest('hex');
+    const ctx = this.ctx;
+    return ctx.helper.md5(password);
   }
 
 }

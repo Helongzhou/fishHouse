@@ -59,11 +59,7 @@ class CommentService extends Service {
   async destroy(id) {
     const app = this.app;
     const ctx = this.ctx;
-    const comment = await app.model.Comment.findOne({ where: { id } });
-    if (comment.user_id !== ctx.state.user.id) {
-      ctx.throw('不能删除他人的评论！');
-    }
-    return await app.model.Comment.destroy({ where: { id } });
+    return await app.model.Comment.destroy({ where: { id, user_id: ctx.state.user.id } });
   }
 
 

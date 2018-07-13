@@ -5,7 +5,7 @@ const Service = require('egg').Service;
 class LikeService extends Service {
   /**
    * @desc 给文章点赞
-   * @param {string} article_id 文章id
+   * @param {integer} article_id 文章id
    * @return {object} Like info
    */
   async article(article_id) {
@@ -30,7 +30,7 @@ class LikeService extends Service {
 
   /**
    * @desc 文章取消点赞
-   * @param {string} article_id 文章id
+   * @param {integer} article_id 文章id
    * @return {array} 1:成功 0:失败
    */
   async articleCancel(article_id) {
@@ -43,7 +43,7 @@ class LikeService extends Service {
 
   /**
    * @desc 给评论点赞
-   * @param {string} comment_id 文章id
+   * @param {integer} comment_id 文章id
    * @return {object} Like info
    */
   async comment(comment_id) {
@@ -68,7 +68,7 @@ class LikeService extends Service {
 
   /**
    * @desc 评论取消点赞
-   * @param {string} comment_id 文章id
+   * @param {integer} comment_id 文章id
    * @return {array} 1:成功 0:失败
    */
   async commentCancel(comment_id) {
